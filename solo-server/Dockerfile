@@ -1,10 +1,12 @@
+# doc: https://azkaban.readthedocs.io/en/latest/getStarted.html#installing-the-solo-server
+
 FROM openjdk:8 as builder
 
 WORKDIR /src
 
 RUN apt-get update && \
     # fix: package javafx.util does not exist
-    # install javafx
+    # more info: https://github.com/docker-library/openjdk/issues/158#issuecomment-356412462
     apt-get install -y --no-install-recommends openjfx && \ 
     rm -rf /var/lib/apt/lists/*
 
@@ -16,9 +18,9 @@ RUN git clone -b 3.90.0 https://github.com/azkaban/azkaban.git && \
 
 FROM openjdk:8
 
-COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server /app
+WORKDIR /app/azkaban
 
-WORKDIR /app/azkaban-solo-server
+COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
 ENTRYPOINT [ "bin/start-solo.sh" ]
 
