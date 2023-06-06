@@ -1,4 +1,4 @@
-name: ci
+name: solo-server-ci
 
 on:
   push:
