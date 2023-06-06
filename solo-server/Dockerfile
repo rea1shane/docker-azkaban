@@ -13,7 +13,7 @@ RUN apt-get update && \
 RUN git clone -b 3.90.0 https://github.com/azkaban/azkaban.git && \
     # fix: Could not GET 'https://nodejs.org/dist/v8.10.0/ivy.xml'. Received status code 403 from server: Forbidden
     # more info: https://github.com/srs/gradle-node-plugin/issues/292#issuecomment-562848790
-    sed  -i 's/"com.moowork.node" version "1.2.0"/("com.github.node-gradle.node") version "2.2.0"/g' azkaban/azkaban-web-server/build.gradle && \
+    sed -i 's/"com.moowork.node" version "1.2.0"/("com.github.node-gradle.node") version "2.2.0"/g' azkaban/azkaban-web-server/build.gradle && \
     cd azkaban; ./gradlew build installDist -x test
 
 FROM openjdk:8
@@ -21,6 +21,8 @@ FROM openjdk:8
 WORKDIR /app/azkaban
 
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
+
+RUN sed -i 's/ > soloServerLog__`date +%F+%T`.out 2>&1 &//g' bin/start-solo.sh
 
 ENTRYPOINT [ "bin/start-solo.sh" ]
 
