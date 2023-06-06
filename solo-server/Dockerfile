@@ -7,7 +7,7 @@ WORKDIR /src
 RUN apt-get update && \
     # fix: package javafx.util does not exist
     # more info: https://github.com/docker-library/openjdk/issues/158#issuecomment-356412462
-    apt-get install -y --no-install-recommends openjfx && \ 
+    apt-get install -y --no-install-recommends openjfx && \
     rm -rf /var/lib/apt/lists/*
 
 RUN git clone -b 3.90.0 https://github.com/azkaban/azkaban.git && \
@@ -23,7 +23,7 @@ WORKDIR /app/azkaban
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
 RUN touch /tmp/block && \
-    echo -e "\ntail -f /tmp/block" >> bin/start-solo.sh
+    echo "\ntail -f /tmp/block" >> bin/start-solo.sh
 
 ENTRYPOINT [ "bin/start-solo.sh" ]
 
