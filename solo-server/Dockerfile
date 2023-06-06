@@ -22,6 +22,8 @@ WORKDIR /app/azkaban
 
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
-ENTRYPOINT [ "bin/start-solo.sh", "&&", "tail", "-f", "currentpid" ]
+RUN echo 'run "tail -f" to prevent the container from exiting' > /tmp/block
+
+ENTRYPOINT [ "bin/start-solo.sh", "&&", "tail", "-f", "/tmp/block" ]
 
 EXPOSE 8081
