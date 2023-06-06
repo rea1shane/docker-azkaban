@@ -1,6 +1,6 @@
 # doc: https://azkaban.readthedocs.io/en/latest/getStarted.html#installing-the-solo-server
 
-FROM amazoncorretto:8-alpine-jdk as builder
+FROM openjdk:8 as builder
 
 WORKDIR /src
 
