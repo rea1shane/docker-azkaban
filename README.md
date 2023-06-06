@@ -4,6 +4,8 @@ After version 3.0, Azkaban provide two modes: the [stand alone “solo-server”
 
 ## Solo Server
 
+The solo server is a standalone instance of Azkaban and the simplest to get started with.
+
 ### Quick Start
 
 To start a Azkaban solo server, run:
@@ -33,7 +35,7 @@ You can mount a custom configuration when you start the container. Azkaban is lo
 
 ### Supported Azkaban Versions
 
-View the available Azkaban versions in the [image repository](https://hub.docker.com/r/rea1shane/azkaban-solo-server).
+View available Azkaban versions in the [image tags](https://hub.docker.com/r/rea1shane/azkaban-solo-server/tags).
 
 ## Multi Executor Server
 
