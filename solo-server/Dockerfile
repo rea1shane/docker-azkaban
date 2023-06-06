@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM openjdk:8 as builder
 
 WORKDIR /src
 
@@ -14,6 +14,12 @@ RUN git clone -b 3.90.0 https://github.com/azkaban/azkaban.git && \
     sed  -i 's/"com.moowork.node" version "1.2.0"/("com.github.node-gradle.node") version "2.2.0"/g' azkaban/azkaban-web-server/build.gradle && \
     cd azkaban; ./gradlew build installDist -x test
 
-ENTRYPOINT [ "cd azkaban/azkaban-solo-server/build/install/azkaban-solo-server; bin/start-solo.sh" ]
+FROM openjdk:8
+
+COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server /app
+
+WORKDIR /app/azkaban-solo-server
+
+ENTRYPOINT [ "bin/start-solo.sh" ]
 
 EXPOSE 8081
