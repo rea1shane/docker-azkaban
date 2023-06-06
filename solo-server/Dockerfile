@@ -1,6 +1,6 @@
 # doc: https://azkaban.readthedocs.io/en/latest/getStarted.html#installing-the-solo-server
 
-FROM openjdk:8 as builder
+FROM amazoncorretto:8-alpine-jdk as builder
 
 WORKDIR /src
 
@@ -16,7 +16,7 @@ RUN git clone -b 3.90.0 https://github.com/azkaban/azkaban.git && \
     sed -i 's/"com.moowork.node" version "1.2.0"/("com.github.node-gradle.node") version "2.2.0"/g' azkaban/azkaban-web-server/build.gradle && \
     cd azkaban; ./gradlew build installDist -x test
 
-FROM openjdk:8
+FROM amazoncorretto:8-alpine-jre
 
 WORKDIR /app/azkaban
 
