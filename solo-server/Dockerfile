@@ -23,7 +23,8 @@ WORKDIR /app/azkaban
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
 RUN touch /tmp/block && \
-    echo -e "\ntail -f /tmp/block" >> bin/start-solo.sh
+    echo -e "\ntail -f /tmp/block" >> bin/start-solo.sh && \
+    sed -i 's/${script_dir}/sh ${script_dir}/g' bin/start-solo.sh
 
 ENTRYPOINT [ "sh", "bin/start-solo.sh" ]
 
