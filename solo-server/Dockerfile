@@ -22,6 +22,6 @@ WORKDIR /app/azkaban
 
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
-ENTRYPOINT [ "bin/start-solo.sh" ]
+ENTRYPOINT [ "bin/start-solo.sh", "&&", "tail", "-f", "currentpid" ]
 
 EXPOSE 8081
