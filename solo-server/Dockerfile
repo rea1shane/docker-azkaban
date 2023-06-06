@@ -25,6 +25,6 @@ COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-
 RUN touch /tmp/block && \
     echo -e "\ntail -f /tmp/block" >> bin/start-solo.sh
 
-ENTRYPOINT [ "bin/start-solo.sh" ]
+ENTRYPOINT [ "sh", "bin/start-solo.sh" ]
 
 EXPOSE 8081
