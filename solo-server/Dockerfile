@@ -22,8 +22,9 @@ WORKDIR /app/azkaban
 
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
-RUN echo 'Azkaban is up and running' > /tmp/block
+RUN touch /tmp/block && \
+    echo -e "\ntail -f /tmp/block" >> bin/start-solo.sh
 
-ENTRYPOINT [ "bin/start-solo.sh", "&&", "tail", "-f", "/tmp/block" ]
+ENTRYPOINT [ "bin/start-solo.sh" ]
 
 EXPOSE 8081
