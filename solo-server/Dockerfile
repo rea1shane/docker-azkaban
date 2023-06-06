@@ -22,8 +22,8 @@ WORKDIR /app/azkaban
 
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
-RUN sed -i 's/ > soloServerLog__`date +%F+%T`.out 2>&1 &//g' bin/start-solo.sh
+RUN echo '"tail -f" to prevent the container from exiting' > block
 
-ENTRYPOINT [ "bin/start-solo.sh; echo 'pid: ' && tail -f currentpid" ]
+ENTRYPOINT [ "bin/start-solo.sh; tail -f block" ]
 
 EXPOSE 8081
