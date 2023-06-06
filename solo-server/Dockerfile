@@ -24,6 +24,6 @@ COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-
 
 RUN sed -i 's/ > soloServerLog__`date +%F+%T`.out 2>&1 &//g' bin/start-solo.sh
 
-ENTRYPOINT [ "bin/start-solo.sh" ]
+ENTRYPOINT [ "bin/start-solo.sh; echo 'pid: ' && tail -f currentpid" ]
 
 EXPOSE 8081
