@@ -11,7 +11,7 @@ The solo server is a standalone instance of Azkaban and the simplest to get star
 To start a Azkaban solo server, run:
 
 ```shell
-docker run --name azkaban-solo-server -p 8081:8081 -d rea1shane/azkaban-solo-server
+docker run --name azkaban-solo-server -p 8081:8081 --platform linux/x86_64 -d rea1shane/azkaban-solo-server
 ```
 
 Then, you can access the Web UI at http://localhost:8081/. The default login username and password for the solo server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the container.
