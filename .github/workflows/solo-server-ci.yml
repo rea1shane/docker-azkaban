@@ -46,6 +46,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:solo-server"
-          build-args: AZKABAN_VERSION=${{ matrix.version }}
+          build-args: |
+            AZKABAN_VERSION=${{ matrix.version }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:${{ matrix.version }}
