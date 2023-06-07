@@ -1,7 +1,16 @@
 name: solo-server-ci
 
 on:
+  schedule:
+    - cron: "0 8 * * *"
   push:
+    branches:
+      - "main"
+    paths:
+      - "solo-server/Dockerfile"
+      - ".github/workflows/solo-server-ci.yml"
+      - "supported-azkaban-versions.json"
+  pull_request:
     branches:
       - "main"
     paths:
@@ -27,11 +36,14 @@ jobs:
           echo "$EOF" >> "$GITHUB_OUTPUT"
 
   docker:
+    if: ! ${{ github.event_name == 'schedule' && matrix.version != 'master' }}
     needs: setup
     runs-on: ubuntu-latest
     strategy:
       matrix:
         version: ${{ fromJson(needs.setup.outputs.matrix) }}
+    env:
+      LATEST_TAG: ""
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -44,7 +56,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Is latest
         if: ${{ matrix.version == 'master' }}
-        run: echo ""LATEST_TAG=,${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:latest"" >> "$GITHUB_ENV"
+        run: echo "LATEST_TAG=,${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:latest" >> "$GITHUB_ENV"
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -52,4 +64,4 @@ jobs:
           build-args: |
             AZKABAN_VERSION=${{ matrix.version }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:${{ matrix.version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:${{ matrix.version }}${{ env.LATEST_TAG }}
