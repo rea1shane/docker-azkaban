@@ -1,35 +1,51 @@
 name: solo-server-ci
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   push:
     branches:
-      - 'main'
+      - "main"
     paths:
-      - 'solo-server/Dockerfile'
-      - '.github/workflows/solo-server-ci.yml'
+      - "solo-server/Dockerfile"
+      - "supported-azkaban-versions.json"
+      - ".github/workflows/solo-server-ci.yml"
 
 jobs:
-  docker:
+  setup:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.versions.outputs.VERSIONS }}
     steps:
-      -
-        name: Set up QEMU
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get supported Azkaban versions
+        id: versions
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          content=$(cat supported-azkaban-versions.json)
+          echo "VERSIONS<<$EOF" >> "$GITHUB_OUTPUT"
+          echo "$content" >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
+
+  docker:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.setup.outputs.matrix) }}
+    steps:
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:solo-server"
+          build-args: AZKABAN_VERSION=${{ matrix.version }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:${{ matrix.version }}

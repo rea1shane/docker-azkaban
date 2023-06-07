@@ -10,7 +10,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends openjfx && \
     rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/azkaban/azkaban.git && \
+ARG AZKABAN_VERSION
+
+RUN git clone -b ${AZKABAN_VERSION} https://github.com/azkaban/azkaban.git && \
     # Fix: Could not GET 'https://nodejs.org/dist/v8.10.0/ivy.xml'. Received status code 403 from server: Forbidden
     # See: https://github.com/srs/gradle-node-plugin/issues/292#issuecomment-562848790
     sed -i 's/"com.moowork.node" version "1.2.0"/("com.github.node-gradle.node") version "2.2.0"/g' azkaban/azkaban-web-server/build.gradle && \
