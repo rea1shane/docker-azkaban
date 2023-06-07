@@ -6,6 +6,7 @@ on:
       - 'main'
     paths:
       - 'solo-server/Dockerfile'
+      - '.github/workflows/solo-server-ci.yml'
 
 jobs:
   docker:
