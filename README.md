@@ -1,5 +1,7 @@
 # Docker Azkaban
 
+[![solo-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml)
+
 After version 3.0, Azkaban provide two modes: the [stand alone “solo-server” mode](#solo-server) and [distributed multiple-executor mode](#multi-executor-server).
 
 ## Solo Server
