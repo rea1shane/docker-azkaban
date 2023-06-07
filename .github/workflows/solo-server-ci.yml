@@ -6,8 +6,8 @@ on:
       - "main"
     paths:
       - "solo-server/Dockerfile"
-      - "supported-azkaban-versions.json"
       - ".github/workflows/solo-server-ci.yml"
+      - "supported-azkaban-versions.json"
 
 jobs:
   setup:
@@ -20,8 +20,8 @@ jobs:
       - name: Get supported Azkaban versions
         id: versions
         run: |
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           content=$(cat supported-azkaban-versions.json)
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "VERSIONS<<$EOF" >> "$GITHUB_OUTPUT"
           echo "$content" >> "$GITHUB_OUTPUT"
           echo "$EOF" >> "$GITHUB_OUTPUT"
@@ -42,6 +42,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Is latest
+        if: ${{ matrix.version == 'master' }}
+        run: echo ""LATEST_TAG=,${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:latest"" >> "$GITHUB_ENV"
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
