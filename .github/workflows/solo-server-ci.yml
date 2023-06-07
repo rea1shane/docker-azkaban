@@ -42,26 +42,32 @@ jobs:
       matrix:
         version: ${{ fromJson(needs.setup.outputs.matrix) }}
     env:
-      LATEST_TAG: ""
+      SKIP_FLAG: false
+      EXTRA_TAG: ""
     steps:
+      - name: Check skip
+        if: github.event_name == 'schedule' && matrix.version != 'master'
+        run: echo "SKIP_FLAG=true" >> "$GITHUB_ENV"
+      - name: Check latest
+        if: env.SKIP_FLAG && matrix.version == 'master'
+        run: echo "EXTRA_TAG=,${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:latest" >> "$GITHUB_ENV"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+        if: env.SKIP_FLAG
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        if: env.SKIP_FLAG
       - name: Login to Docker Hub
         uses: docker/login-action@v2
+        if: env.SKIP_FLAG
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Is latest
-        if: ${{ matrix.version == 'master' }}
-        run: echo "LATEST_TAG=,${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:latest" >> "$GITHUB_ENV"
       - name: Build and push
         uses: docker/build-push-action@v4
-        if: ! ${{ github.event_name == 'schedule' && matrix.version != 'master' }}
+        if: env.SKIP_FLAG
         with:
           context: "{{defaultContext}}:solo-server"
-          build-args: |
-            AZKABAN_VERSION=${{ matrix.version }}
+          build-args: AZKABAN_VERSION=${{ matrix.version }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:${{ matrix.version }}${{ env.LATEST_TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:${{ matrix.version }}${{ env.EXTRA_TAG }}
