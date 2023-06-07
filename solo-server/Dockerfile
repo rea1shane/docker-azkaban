@@ -23,7 +23,9 @@ WORKDIR /app/azkaban
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
 RUN touch /tmp/block && \
+    # Preventing automatic container exit.
     echo -e "\ntail -f /tmp/block" >> bin/start-solo.sh && \
+    # In alpine, if you do not tell the parent shell which interpreter should be used in the script, you must manually specify it.
     sed -i 's/${script_dir}/sh ${script_dir}/g' bin/start-solo.sh
 
 ENTRYPOINT [ "sh", "bin/start-solo.sh" ]
