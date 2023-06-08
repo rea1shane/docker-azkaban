@@ -42,3 +42,5 @@ You can mount a custom configuration when you start the container. Azkaban is lo
 ## Supported Azkaban versions
 
 View available Azkaban versions in the [supported-azkaban-versions.json](https://github.com/rea1shane/docker-azkaban/blob/main/supported-azkaban-versions.json) or [image tags](https://hub.docker.com/r/rea1shane/azkaban-solo-server/tags).
+
+`latest` tag is build from Azkaban `master` branch.
