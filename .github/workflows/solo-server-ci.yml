@@ -2,7 +2,7 @@ name: solo-server-ci
 
 on:
   schedule:
-    - cron: "0 8 * * *"
+    - cron: "50 * * * *"
   push:
     branches:
       - "main"
@@ -47,7 +47,7 @@ jobs:
     steps:
       - name: Check skip
         if: github.event_name == 'schedule' && matrix.version != 'master'
-        run: echo "SKIP_FLAG=true" >> "$GITHUB_ENV"
+        run: echo "SKIP_FLAG=${{ toJson(true) }}" >> "$GITHUB_ENV"
       - name: Check latest
         if: env.SKIP_FLAG && matrix.version == 'master'
         run: echo "EXTRA_TAG=,${{ secrets.DOCKERHUB_USERNAME }}/azkaban-solo-server:latest" >> "$GITHUB_ENV"
