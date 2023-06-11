@@ -12,8 +12,8 @@ RUN git clone -b ${AZKABAN_VERSION} https://github.com/azkaban/azkaban.git && \
 FROM mysql:latest
 
 ARG AZKABAN_VERSION
-ARG AZKABAN_MYSQL_USERNAME
-ARG AZKABAN_MYSQL_PASSWORD
+ARG AZKABAN_MYSQL_USERNAME=azkaban
+ARG AZKABAN_MYSQL_PASSWORD=azkaban
 
 WORKDIR /docker-entrypoint-initdb.d
 
