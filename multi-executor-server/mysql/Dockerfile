@@ -25,5 +25,3 @@ RUN echo -e "\nCREATE USER '${AZKABAN_MYSQL_USERNAME}'@'%' IDENTIFIED BY '${AZKA
     tar zxvf azkaban-db-${AZKABAN_VERSION}.tar.gz && \
     cat azkaban-db-${AZKABAN_VERSION}/create-all-sql-${AZKABAN_VERSION}.sql >> init.sql && \
     rm -rf azkaban*
-
-EXPOSE 3306
