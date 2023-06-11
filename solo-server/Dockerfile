@@ -2,9 +2,9 @@
 
 FROM openjdk:8 as builder
 
-WORKDIR /src
-
 ARG AZKABAN_VERSION
+
+WORKDIR /src
 
 RUN git clone -b ${AZKABAN_VERSION} https://github.com/azkaban/azkaban.git && \
     # Fix: Could not GET 'https://nodejs.org/dist/v8.10.0/ivy.xml'. Received status code 403 from server: Forbidden
