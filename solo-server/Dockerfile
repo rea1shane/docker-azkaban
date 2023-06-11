@@ -4,12 +4,6 @@ FROM openjdk:8 as builder
 
 WORKDIR /src
 
-# RUN apt-get update && \
-#     # Fix: package javafx.util does not exist
-#     # See: https://github.com/docker-library/openjdk/issues/158#issuecomment-356412462
-#     apt-get install -y --no-install-recommends openjfx && \
-#     rm -rf /var/lib/apt/lists/*
-
 ARG AZKABAN_VERSION
 
 RUN git clone -b ${AZKABAN_VERSION} https://github.com/azkaban/azkaban.git && \
