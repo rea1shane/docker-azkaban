@@ -8,13 +8,6 @@ on:
       - "solo-server/Dockerfile"
       - ".github/workflows/solo-server-ci.yml"
       - "supported-azkaban-versions.json"
-  pull_request:
-    branches:
-      - "main"
-    paths:
-      - "solo-server/Dockerfile"
-      - ".github/workflows/solo-server-ci.yml"
-      - "supported-azkaban-versions.json"
 
 jobs:
   setup:
