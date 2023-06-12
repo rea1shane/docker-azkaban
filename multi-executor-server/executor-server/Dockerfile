@@ -1,4 +1,4 @@
-# Doc: https://azkaban.readthedocs.io/en/latest/getStarted.html#database-setup
+# Doc: https://azkaban.readthedocs.io/en/latest/getStarted.html#installing-azkaban-executor-server
 
 FROM openjdk:8
 
