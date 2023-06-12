@@ -26,6 +26,9 @@ RUN touch /tmp/block && \
     sed -i 's/${script_dir}/sh ${script_dir}/g' bin/start-exec.sh && \
     sed -i "s/mysql.host=localhost/mysql.host=${MYSQL_HOST}/g" conf/azkaban.properties && \
     sed -i "s/mysql.user=azkaban/mysql.user=${AZKABAN_MYSQL_USERNAME}/g" conf/azkaban.properties && \
-    sed -i "s/mysql.password=azkaban/mysql.password=${AZKABAN_MYSQL_PASSWORD}/g" conf/azkaban.properties
+    sed -i "s/mysql.password=azkaban/mysql.password=${AZKABAN_MYSQL_PASSWORD}/g" conf/azkaban.properties && \
+    echo -e "\nexecutor.port=12321\n" >> conf/azkaban.properties
 
 ENTRYPOINT [ "sh", "bin/start-exec.sh" ]
+
+EXPOSE 12321
