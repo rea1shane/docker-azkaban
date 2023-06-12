@@ -9,7 +9,7 @@ WORKDIR /src
 RUN git clone -b ${AZKABAN_VERSION} https://github.com/azkaban/azkaban.git && \
     cd azkaban/azkaban-db; ../gradlew build installDist -x test
 
-FROM mysql:latest
+FROM mysql:5
 
 ARG AZKABAN_VERSION
 ARG AZKABAN_MYSQL_USERNAME=azkaban
