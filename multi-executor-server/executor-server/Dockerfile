@@ -17,9 +17,15 @@ ARG AZKABAN_MYSQL_PASSWORD=azkaban
 
 WORKDIR /app/azkaban-exec-server
 
+COPY ./activate-executor.sh .
 COPY --from=builder /src/azkaban/azkaban-exec-server/build/install/azkaban-exec-server .
 
+# Doc: https://www.cyberciti.biz/faq/how-to-install-curl-on-alpine-linux/
+RUN apk --no-cache add curl
+
 RUN touch /tmp/block && \
+    # Activate executor.
+    echo -e "\nsh activate-executor.sh\n" >> bin/start-exec.sh && \
     # Preventing automatic container exit.
     echo -e "\ntail -f /tmp/block" >> bin/start-exec.sh && \
     # In alpine, if you do not tell the parent shell which interpreter should be used in the script, you must manually specify it.
