@@ -1,0 +1,53 @@
+name: executor-server-ci
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "multi-executor-server/executor-server/**"
+      - ".github/workflows/executor-server-ci.yml"
+      - "supported-azkaban-versions.json"
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.versions.outputs.VERSIONS }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get supported Azkaban versions
+        id: versions
+        run: |
+          content=$(cat supported-azkaban-versions.json)
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "VERSIONS<<$EOF" >> "$GITHUB_OUTPUT"
+          echo "$content" >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
+
+  docker:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.setup.outputs.matrix) }}
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:multi-executor-server/executor-server"
+          build-args: |
+            AZKABAN_VERSION=${{ matrix.version }}
+            MYSQL_HOST=host.docker.internal
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-executor-server:${{ matrix.version }}

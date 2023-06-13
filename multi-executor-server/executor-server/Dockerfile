@@ -21,20 +21,23 @@ COPY ./activate-executor.sh .
 COPY --from=builder /src/azkaban/azkaban-exec-server/build/install/azkaban-exec-server .
 
 # Doc: https://www.cyberciti.biz/faq/how-to-install-curl-on-alpine-linux/
-RUN apk --no-cache add curl
+RUN apk --no-cache add curl && \
+    # Fix: exec executable binary: not found
+    # Doc: https://stackoverflow.com/a/66974607/21609053
+    apk --no-cache add libc6-compat
 
 RUN touch /tmp/block && \
     # Activate executor.
-    echo -e "\nsh activate-executor.sh\n" >> bin/start-exec.sh && \
+    echo -e "\nactivate-executor.sh\n" >> bin/start-exec.sh && \
     # Preventing automatic container exit.
     echo -e "\ntail -f /tmp/block" >> bin/start-exec.sh && \
-    # In alpine, if you do not tell the parent shell which interpreter should be used in the script, you must manually specify it.
-    sed -i 's/${script_dir}/sh ${script_dir}/g' bin/start-exec.sh && \
+    # Update mysql info.
     sed -i "s/mysql.host=localhost/mysql.host=${MYSQL_HOST}/g" conf/azkaban.properties && \
     sed -i "s/mysql.user=azkaban/mysql.user=${AZKABAN_MYSQL_USERNAME}/g" conf/azkaban.properties && \
     sed -i "s/mysql.password=azkaban/mysql.password=${AZKABAN_MYSQL_PASSWORD}/g" conf/azkaban.properties && \
+    # Specify executor port.
     echo -e "\nexecutor.port=12321\n" >> conf/azkaban.properties
 
-ENTRYPOINT [ "sh", "bin/start-exec.sh" ]
+ENTRYPOINT [ "bin/start-exec.sh" ]
 
 EXPOSE 12321
