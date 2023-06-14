@@ -46,7 +46,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:multi-executor-server/executor-server"
-          build-args: |
-            AZKABAN_VERSION=${{ matrix.version }}
+          build-args: AZKABAN_VERSION=${{ matrix.version }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-executor-server:${{ matrix.version }}
