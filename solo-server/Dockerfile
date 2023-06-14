@@ -22,7 +22,7 @@ COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-
 RUN echo -e 'trap "${script_dir}/shutdown-solo.sh > /dev/null; exit" SIGTERM\n' >> bin/start-solo.sh && \
     # Blocking program.
     echo -e 'while true; do sleep 0.1; done' >> bin/start-solo.sh && \
-    # In alpine, you must add 'sh' before execable binary.
+    # In alpine, you must add `sh` before execable binary.
     # See: https://stackoverflow.com/questions/66963068/docker-alpine-executable-binary-not-found-even-if-in-path/66974607#66974607
     sed -i 's/${script_dir}/sh ${script_dir}/g' bin/start-solo.sh
 
