@@ -1,7 +1,5 @@
 # Docker Azkaban
 
-[![solo-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml)
-
 Azkaban docker image.
 
 ## Usage
@@ -9,6 +7,8 @@ Azkaban docker image.
 After version 3.0, Azkaban provide two modes: the [stand alone “solo-server” mode](#solo-server) and [distributed multiple-executor mode](#multi-executor-server).
 
 ### Solo server
+
+[![solo-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml)
 
 To start a Azkaban solo server, run:
 
@@ -19,6 +19,8 @@ docker run --name azkaban-solo-server -p 8081:8081 --platform linux/amd64 -d rea
 Then, you can access the Web UI at http://localhost:8081/. The default login username and password for the solo server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the container.
 
 ### Multi executor server
+
+[![executor-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml)
 
 Coming soon...
 
