@@ -18,15 +18,7 @@ docker run --name azkaban-solo-server -p 8081:8081 --platform linux/amd64 -d rea
 
 Then, you can access the Web UI at http://localhost:8081/. The default login username and password for the solo server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the container.
 
-### Multi executor server
-
-[![executor-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml)
-
-Coming soon...
-
-## Customization
-
-You can mount a custom configuration when you start the container. Azkaban is located at `/app/azkaban`:
+You can mount custom configuration files when you start the container. Azkaban is located at `/app/azkaban`:
 
 ```
 /app/azkaban
@@ -40,6 +32,12 @@ You can mount a custom configuration when you start the container. Azkaban is lo
 ├── sql
 └── web
 ```
+
+### Multi executor server
+
+[![executor-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml)
+
+Coming soon...
 
 ## Supported Azkaban versions
 
