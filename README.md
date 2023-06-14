@@ -6,10 +6,6 @@ Azkaban docker image.
 
 After version 3.0, Azkaban provide two modes: the [stand alone “solo-server” mode](#solo-server) and [distributed multiple-executor mode](#multi-executor-server).
 
-> ATTENTION
->
-> If you use images from my [docker hub](https://hub.docker.com/search?q=rea1shane%2Fazkaban), you must specify the image tag. Tag is the same as the Azkaban version, which can be found in [supported Azkaban versions](#supported-azkaban-versions).
-
 ### Solo server
 
 [![solo-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/solo-server-ci.yml)
