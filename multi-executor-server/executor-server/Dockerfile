@@ -29,7 +29,7 @@ RUN sed -i '2i \\necho Starting...' bin/start-exec.sh && \
     echo -e '${script_dir}/activate-executor.sh\n' >> bin/start-exec.sh && \
     # trap `docker stop` signal
     echo -e 'trap "echo Stopping...; ${script_dir}/shutdown-exec.sh > /dev/null; echo Executor is stopped and has been removed from the executors list.; exit" SIGTERM\n' >> bin/start-exec.sh && \
-    # Preventing automatic container exit.
+    # Blocking program.
     echo -e 'while true; do sleep 0.1; done' >> bin/start-exec.sh && \
     # In alpine, you must add `sh` before execable binary.
     # See: https://stackoverflow.com/questions/66963068/docker-alpine-executable-binary-not-found-even-if-in-path/66974607#66974607

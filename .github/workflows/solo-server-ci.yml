@@ -5,7 +5,7 @@ on:
     branches:
       - "main"
     paths:
-      - "solo-server/Dockerfile"
+      - "solo-server/**"
       - ".github/workflows/solo-server-ci.yml"
       - "supported-azkaban-versions.json"
 

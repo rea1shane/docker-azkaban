@@ -13,7 +13,7 @@ After version 3.0, Azkaban provide two modes: the [stand alone “solo-server”
 To start a Azkaban solo server, run:
 
 ```shell
-docker run --name azkaban-solo-server -p 8081:8081 --platform linux/amd64 -d rea1shane/azkaban-solo-server
+docker run --name azkaban-solo-server -p 8081:8081 --platform linux/amd64 -d rea1shane/azkaban-solo-server:3.90.0
 ```
 
 Then, you can access the Web UI at http://localhost:8081/. The default login username and password for the solo server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the container.
