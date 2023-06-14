@@ -48,6 +48,5 @@ jobs:
           context: "{{defaultContext}}:multi-executor-server/executor-server"
           build-args: |
             AZKABAN_VERSION=${{ matrix.version }}
-            MYSQL_HOST=host.docker.internal
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/azkaban-executor-server:${{ matrix.version }}
