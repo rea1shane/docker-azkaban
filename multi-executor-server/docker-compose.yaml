@@ -1,18 +1,5 @@
 version: '3'
 
-x-azkaban-executor-server-common: &azkaban-executor-server-common
-  image: rea1shane/azkaban-executor-server:${AZKABAN_VERSION}
-  platform: linux/amd64
-  expose:
-    - 12321
-  depends_on:
-    mysql:
-      condition: service_healthy
-  healthcheck:
-    test: [ "CMD", "sh", "bin/activate-executor.sh" ]
-    timeout: 5s
-    retries: 24
-
 services:
   mysql:
     container_name: azkaban-mysql
@@ -30,17 +17,19 @@ services:
       timeout: 5s
       retries: 24
 
-  executor-server-1:
-    container_name: azkaban-executor-server-1
-    <<: *azkaban-executor-server-common
-
-  executor-server-2:
-    container_name: azkaban-executor-server-2
-    <<: *azkaban-executor-server-common
-
-  executor-server-3:
-    container_name: azkaban-executor-server-3
-    <<: *azkaban-executor-server-common
+  executor-server:
+    container_name: azkaban-executor-server
+    image: rea1shane/azkaban-executor-server:${AZKABAN_VERSION}
+    platform: linux/amd64
+    expose:
+      - 12321
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "sh", "bin/activate-executor.sh" ]
+      timeout: 5s
+      retries: 24
 
   web-server:
     container_name: azkaban-web-server
@@ -49,9 +38,5 @@ services:
     ports:
       - 8081:8081
     depends_on:
-      executor-server-1:
-        condition: service_healthy
-      executor-server-2:
-        condition: service_healthy
-      executor-server-3:
+      executor-server:
         condition: service_healthy
