@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - multi-executor-server/executor-server/**
       - .github/workflows/ci-template.yml
       - .github/workflows/executor-server-ci.yml
+      - multi-executor-server/executor-server/**
       - supported-azkaban-versions.json
 
 jobs:

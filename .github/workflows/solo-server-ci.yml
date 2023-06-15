@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - solo-server/**
       - .github/workflows/ci-template.yml
       - .github/workflows/solo-server-ci.yml
+      - solo-server/**
       - supported-azkaban-versions.json
 
 jobs:
