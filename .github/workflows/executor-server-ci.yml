@@ -6,13 +6,13 @@ on:
       - main
     paths:
       - multi-executor-server/executor-server/**
-      - .github/workflows/templates/ci.yml
+      - .github/workflows/ci-template.yml
       - .github/workflows/executor-server-ci.yml
       - supported-azkaban-versions.json
 
 jobs:
   ci:
-    uses: rea1shane/docker-azkaban/.github/workflows/templates/ci.yml@main
+    uses: rea1shane/docker-azkaban/.github/workflows/ci-template.yml@main
     with:
       component-name: azkaban-executor-server
       build-context: multi-executor-server/executor-server
