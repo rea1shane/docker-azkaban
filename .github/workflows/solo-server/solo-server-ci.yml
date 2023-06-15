@@ -6,7 +6,7 @@ on:
       - "main"
     paths:
       - "solo-server/**"
-      - ".github/workflows/solo-server-ci.yml"
+      - ".github/workflows/solo-server/solo-server-ci.yml"
       - "supported-azkaban-versions.json"
 
 jobs:
