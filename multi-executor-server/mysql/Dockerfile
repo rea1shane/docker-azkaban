@@ -24,5 +24,7 @@ RUN tar zxvf azkaban-db-${AZKABAN_VERSION}.tar.gz && \
     rm -rf azkaban*
 
 # https://stackoverflow.com/questions/42567475/docker-compose-check-if-mysql-connection-is-ready
+# Fix: Access denied for user 'root'@'localhost' (using password: YES)
+# Doc: https://stackoverflow.com/a/44840260/21609053
 HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
-    CMD [ "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}" ]
+    CMD [ "sudo", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}" ]
