@@ -1,5 +1,13 @@
 version: '3'
 
+x-azkaban-executor-server-common: &azkaban-executor-server-common
+  image: rea1shane/azkaban-executor-server:${AZKABAN_VERSION}
+  platform: linux/amd64
+  expose:
+    - 12321
+  depends_on:
+    - mysql
+
 services:
   mysql:
     container_name: azkaban-mysql
@@ -11,3 +19,26 @@ services:
       - ./mysql/my.cnf:/etc/my.cnf
     ports:
       - 3306:3306
+
+  executor-server-1:
+    container_name: azkaban-executor-server-1
+    <<: *azkaban-executor-server-common
+
+  executor-server-2:
+    container_name: azkaban-executor-server-2
+    <<: *azkaban-executor-server-common
+
+  executor-server-3:
+    container_name: azkaban-executor-server-3
+    <<: *azkaban-executor-server-common
+
+  web-server:
+    container_name: azkaban-web-server
+    image: rea1shane/azkaban-web-server:${AZKABAN_VERSION}
+    platform: linux/amd64
+    ports:
+      - 8081:8081
+    depends_on:
+      - executor-server-1
+      - executor-server-2
+      - executor-server-3
