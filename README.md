@@ -35,6 +35,7 @@ You can mount custom configuration files when you start the container. Azkaban i
 
 ### Multi executor server
 
+[![mysql-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/mysql-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/mysql-ci.yml)
 [![executor-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml)
 [![web-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/web-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/web-server-ci.yml)
 
