@@ -26,7 +26,8 @@ RUN apk --no-cache add curl
 RUN sed -i '2i \\necho Starting...' bin/start-exec.sh && \
     # Activate executor.
     echo 'echo Activating...' >> bin/start-exec.sh && \
-    echo -e '${script_dir}/activate-executor.sh\n' >> bin/start-exec.sh && \
+    echo '${script_dir}/activate-executor.sh' >> bin/start-exec.sh && \
+    echo -e 'echo Executor has been started and activated.\n' >> bin/start-exec.sh && \
     # trap `docker stop` signal
     echo -e 'trap "echo Stopping...; ${script_dir}/shutdown-exec.sh > /dev/null; echo Executor is stopped and has been removed from the executors list.; exit" SIGTERM\n' >> bin/start-exec.sh && \
     # Blocking program.
@@ -44,3 +45,6 @@ RUN sed -i '2i \\necho Starting...' bin/start-exec.sh && \
 ENTRYPOINT [ "sh", "bin/start-exec.sh" ]
 
 EXPOSE 12321
+
+HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
+    CMD [ "sh", "bin/activate-executor.sh" ]

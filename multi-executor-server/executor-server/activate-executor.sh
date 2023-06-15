@@ -10,5 +10,3 @@ while [ $(ls ${script_dir}/.. | grep executorServerLog > /dev/null; echo $?) -ne
 do
     sleep 1
 done
-
-echo "Executor has been started and activated."
