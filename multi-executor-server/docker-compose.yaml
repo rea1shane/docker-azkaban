@@ -18,7 +18,6 @@ services:
       retries: 24
 
   executor-server:
-    container_name: azkaban-executor-server
     image: rea1shane/azkaban-executor-server:${AZKABAN_VERSION}
     platform: linux/amd64
     expose:
