@@ -1,0 +1,21 @@
+name: mysql-ci
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/ci-template.yml
+      - .github/workflows/mysql-ci.yml
+      - multi-executor-server/mysql/**
+      - supported-azkaban-versions.json
+
+jobs:
+  ci:
+    uses: rea1shane/docker-azkaban/.github/workflows/ci-template.yml@main
+    with:
+      component-name: azkaban-mysql
+      build-context: multi-executor-server/mysql
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
