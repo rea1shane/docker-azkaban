@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: azkaban-mysql
+    image: rea1shane/azkaban-mysql:${AZKABAN_VERSION}
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./mysql/my.cnf:/etc/my.cnf
+    ports:
+      - 3306:3306
