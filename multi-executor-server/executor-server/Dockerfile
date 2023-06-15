@@ -18,7 +18,7 @@ ARG AZKABAN_MYSQL_PASSWORD=azkaban
 WORKDIR /app/azkaban-exec-server
 
 COPY --from=builder /src/azkaban/azkaban-exec-server/build/install/azkaban-exec-server .
-COPY ./activate-executor.sh bin
+COPY activate-executor.sh bin
 
 # Doc: https://www.cyberciti.biz/faq/how-to-install-curl-on-alpine-linux/
 RUN apk --no-cache add curl
