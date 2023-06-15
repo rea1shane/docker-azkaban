@@ -9,6 +9,8 @@ on:
       - .github/workflows/mysql-ci.yml
       - multi-executor-server/mysql/**
       - supported-azkaban-versions.json
+    paths-ignore:
+      - multi-executor-server/mysql/my.cnf
 
 jobs:
   ci:
