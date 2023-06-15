@@ -6,7 +6,12 @@ x-azkaban-executor-server-common: &azkaban-executor-server-common
   expose:
     - 12321
   depends_on:
-    - mysql
+    mysql:
+      condition: service_healthy
+  healthcheck:
+    test: [ "CMD", "sh", "bin/activate-executor.sh" ]
+    timeout: 5s
+    retries: 24
 
 services:
   mysql:
@@ -19,6 +24,11 @@ services:
       - ./mysql/my.cnf:/etc/my.cnf
     ports:
       - 3306:3306
+    # https://stackoverflow.com/questions/42567475/docker-compose-check-if-mysql-connection-is-ready
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 24
 
   executor-server-1:
     container_name: azkaban-executor-server-1
@@ -39,6 +49,9 @@ services:
     ports:
       - 8081:8081
     depends_on:
-      - executor-server-1
-      - executor-server-2
-      - executor-server-3
+      executor-server-1:
+        condition: service_healthy
+      executor-server-2:
+        condition: service_healthy
+      executor-server-3:
+        condition: service_healthy
