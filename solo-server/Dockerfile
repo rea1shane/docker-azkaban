@@ -29,3 +29,6 @@ RUN echo -e 'trap "${script_dir}/shutdown-solo.sh > /dev/null; exit" SIGTERM\n' 
 ENTRYPOINT [ "sh", "bin/start-solo.sh" ]
 
 EXPOSE 8081
+
+HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
+    CMD [ "netstat", "-anp", "|", "grep", "8081" ]

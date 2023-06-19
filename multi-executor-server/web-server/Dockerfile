@@ -36,3 +36,6 @@ RUN sed -i '5i echo Initializing...\n${script_dir}/init.sh > /dev/null\necho Don
 ENTRYPOINT [ "sh", "bin/start-web.sh" ]
 
 EXPOSE 8081
+
+HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
+    CMD [ "netstat", "-anp", "|", "grep", "8081" ]
