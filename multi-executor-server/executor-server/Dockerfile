@@ -44,4 +44,4 @@ ENTRYPOINT [ "sh", "bin/start-exec.sh" ]
 
 EXPOSE 12321
 
-HEALTHCHECK CMD [ "netstat", "-anp", "|", "grep", "12321" ]
+HEALTHCHECK CMD [ "curl", "-G", "localhost:12321/executor?action=activate" ]
