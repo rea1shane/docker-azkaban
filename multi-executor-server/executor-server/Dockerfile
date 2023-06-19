@@ -17,14 +17,19 @@ ENV AZKABAN_MYSQL_PASSWORD=azkaban
 
 WORKDIR /app/azkaban-exec-server
 
-COPY --from=builder /src/azkaban/azkaban-exec-server/build/install/azkaban-exec-server .
-COPY init.sh bin
-
 # Doc: https://www.cyberciti.biz/faq/how-to-install-curl-on-alpine-linux/
 RUN apk --no-cache add curl
 
-RUN sed -i '5i echo Initializing...\n${script_dir}/init.sh > /dev/null\necho Done.\n' bin/start-exec.sh && \
-    echo -e 'echo Executor has been started.\n' >> bin/start-exec.sh && \
+COPY --from=builder /src/azkaban/azkaban-exec-server/build/install/azkaban-exec-server .
+COPY init-exec.sh bin
+COPY activate-exec.sh bin
+
+RUN sed -i '5i echo Initializing...\n${script_dir}/init-exec.sh > /dev/null\necho Done.\n' bin/start-exec.sh && \
+    sed -i '9i echo Starting...\n' bin/start-exec.sh && \
+    # Activate
+    echo 'echo Activating...' >> bin/start-exec.sh && \
+    echo '${script_dir}/activate-exec.sh' >> bin/start-exec.sh && \
+    echo -e 'echo Executor has been started and activated.\n' >> bin/start-exec.sh && \
     # trap `docker stop` signal
     echo -e 'trap "echo Stopping...; ${script_dir}/shutdown-exec.sh > /dev/null; echo Executor is stopped and has been removed from the executors list.; exit" SIGTERM\n' >> bin/start-exec.sh && \
     # Blocking program.
@@ -39,5 +44,4 @@ ENTRYPOINT [ "sh", "bin/start-exec.sh" ]
 
 EXPOSE 12321
 
-HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
-    CMD [ "curl", "--silent", "-G", "localhost:12321/executor?action=activate" ]
+HEALTHCHECK CMD [ "netstat", "-anp", "|", "grep", "12321" ]

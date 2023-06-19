@@ -21,9 +21,9 @@ ENV AZKABAN_MYSQL_PASSWORD=azkaban
 WORKDIR /app/azkaban-web-server
 
 COPY --from=builder /src/azkaban/azkaban-web-server/build/install/azkaban-web-server .
-COPY init.sh bin
+COPY init-web.sh bin
 
-RUN sed -i '5i echo Initializing...\n${script_dir}/init.sh > /dev/null\necho Done.\n' bin/start-web.sh && \
+RUN sed -i '5i echo Initializing...\n${script_dir}/init-web.sh > /dev/null\necho Done.\n' bin/start-web.sh && \
     echo -e 'echo Web server has been started.\n' >> bin/start-web.sh && \
     # trap `docker stop` signal
     echo -e 'trap "echo Stopping...; ${script_dir}/shutdown-web.sh > /dev/null; echo Web server is stopped.; exit" SIGTERM\n' >> bin/start-web.sh && \
@@ -37,5 +37,4 @@ ENTRYPOINT [ "sh", "bin/start-web.sh" ]
 
 EXPOSE 8081
 
-HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
-    CMD [ "netstat", "-anp", "|", "grep", "8081" ]
+HEALTHCHECK CMD [ "netstat", "-anp", "|", "grep", "8081" ]
