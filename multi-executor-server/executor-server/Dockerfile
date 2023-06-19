@@ -40,4 +40,4 @@ ENTRYPOINT [ "sh", "bin/start-exec.sh" ]
 EXPOSE 12321
 
 HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
-    CMD [ "curl", "-G", 'localhost:12321/executor?action=activate' ]
+    CMD [ "curl", "--silent", "-G", "localhost:12321/executor?action=activate" ]
