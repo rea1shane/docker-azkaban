@@ -14,25 +14,24 @@ RUN git clone -b ${AZKABAN_VERSION} https://github.com/azkaban/azkaban.git && \
 
 FROM amazoncorretto:8-alpine-jre
 
-ARG MYSQL_HOST=mysql
-ARG AZKABAN_MYSQL_USERNAME=azkaban
-ARG AZKABAN_MYSQL_PASSWORD=azkaban
+ENV MYSQL_HOST=host.docker.internal
+ENV AZKABAN_MYSQL_USERNAME=azkaban
+ENV AZKABAN_MYSQL_PASSWORD=azkaban
 
 WORKDIR /app/azkaban-web-server
 
 COPY --from=builder /src/azkaban/azkaban-web-server/build/install/azkaban-web-server .
+COPY init.sh bin
 
-# trap `docker stop` signal
-RUN echo -e 'trap "${script_dir}/shutdown-web.sh > /dev/null; exit" SIGTERM\n' >> bin/start-web.sh && \
+RUN sed -i '5i echo Initializing...\n${script_dir}/init.sh > /dev/null\necho Done.\n' bin/start-web.sh && \
+    echo -e 'echo Web server has been started.\n' >> bin/start-web.sh && \
+    # trap `docker stop` signal
+    echo -e 'trap "echo Stopping...; ${script_dir}/shutdown-web.sh > /dev/null; echo Web server is stopped.; exit" SIGTERM\n' >> bin/start-web.sh && \
     # Blocking program.
     echo -e 'while true; do sleep 0.1; done' >> bin/start-web.sh && \
     # In alpine, you must add `sh` before execable binary.
     # See: https://stackoverflow.com/questions/66963068/docker-alpine-executable-binary-not-found-even-if-in-path/66974607#66974607
-    sed -i 's/${script_dir}/sh ${script_dir}/g' bin/start-web.sh && \
-    # Update MySQL info
-    sed -i "s/mysql.host=localhost/mysql.host=${MYSQL_HOST}/g" conf/azkaban.properties && \
-    sed -i "s/mysql.user=azkaban/mysql.user=${AZKABAN_MYSQL_USERNAME}/g" conf/azkaban.properties && \
-    sed -i "s/mysql.password=azkaban/mysql.password=${AZKABAN_MYSQL_PASSWORD}/g" conf/azkaban.properties
+    sed -i 's/${script_dir}/sh ${script_dir}/g' bin/start-web.sh
 
 ENTRYPOINT [ "sh", "bin/start-web.sh" ]
 
