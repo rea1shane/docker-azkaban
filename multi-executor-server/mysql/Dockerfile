@@ -21,7 +21,7 @@ COPY --from=builder /src/azkaban/azkaban-db/build/distributions/azkaban-db-${AZK
 
 RUN tar zxvf azkaban-db-${AZKABAN_VERSION}.tar.gz && \
     cat azkaban-db-${AZKABAN_VERSION}/create-all-sql-${AZKABAN_VERSION}.sql >> init.sql && \
-    rm -rf azkaban*
+    rm -rf azkaban-db-*
 
 # https://stackoverflow.com/questions/42567475/docker-compose-check-if-mysql-connection-is-ready
 HEALTHCHECK CMD [ "mysqladmin", "ping", "-h", "localhost" ]
