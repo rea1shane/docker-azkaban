@@ -5,6 +5,10 @@ services:
     container_name: azkaban-mysql
     image: rea1shane/azkaban-mysql:${AZKABAN_VERSION}
     platform: linux/amd64
+    build:
+      context: mysql
+      args:
+        - AZKABAN_VERSION=${AZKABAN_VERSION}
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
@@ -13,6 +17,10 @@ services:
   executor-server:
     image: rea1shane/azkaban-executor-server:${AZKABAN_VERSION}
     platform: linux/amd64
+    build:
+      context: executor-server
+      args:
+        - AZKABAN_VERSION=${AZKABAN_VERSION}
     environment:
       MYSQL_HOST: mysql
     expose:
@@ -25,6 +33,10 @@ services:
     container_name: azkaban-web-server
     image: rea1shane/azkaban-web-server:${AZKABAN_VERSION}
     platform: linux/amd64
+    build:
+      context: web-server
+      args:
+        - AZKABAN_VERSION=${AZKABAN_VERSION}
     environment:
       MYSQL_HOST: mysql
     ports:
