@@ -16,22 +16,9 @@ To start a Azkaban solo server, run:
 docker run --name azkaban-solo-server -p 8081:8081 --platform linux/amd64 -d rea1shane/azkaban-solo-server:3.90.0
 ```
 
-Then, you can access the Web UI at http://localhost:8081/. The default login username and password for the solo server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the container.
+Once the container is in the `healthy` state, you can access the Web UI at http://localhost:8081/. The default login username and password for the solo server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the container.
 
-You can mount custom configuration files when you start the container. Azkaban is located at `/app/azkaban`:
-
-```
-/app/azkaban
-├── bin
-├── conf
-│   ├── azkaban-users.xml
-│   ├── azkaban.properties
-│   └── global.properties
-├── lib
-├── plugins
-├── sql
-└── web
-```
+You can mount custom configuration files when you start the container. Azkaban is located at `/app/azkaban`.
 
 ### Multi executor server
 
@@ -39,7 +26,17 @@ You can mount custom configuration files when you start the container. Azkaban i
 [![executor-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/executor-server-ci.yml)
 [![web-server-ci](https://github.com/rea1shane/docker-azkaban/actions/workflows/web-server-ci.yml/badge.svg)](https://github.com/rea1shane/docker-azkaban/actions/workflows/web-server-ci.yml)
 
-Coming soon...
+To start a Azkaban multi executor server, run:
+
+```shell
+cd multi-executor-server
+
+docker-compose -p azkaban up -d --scale executor-server=3
+```
+
+Once all container are in the `healthy` state, you can access the Web UI at http://localhost:8081/. The default login username and password for the multi executor server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the `azkaban-web-server` container.
+
+You can mount custom configuration files when you start the compose. Executor server is located at `/app/azkaban-exec-server` and web server is located at `/app/azkaban-web-server`.
 
 ## Supported Azkaban versions
 
