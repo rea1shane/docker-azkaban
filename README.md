@@ -42,7 +42,7 @@ Run:
 docker-compose -f multi-executor-server/docker-compose.yaml -p azkaban up -d --scale executor-server=3
 ```
 
-Once all container are in the healthy state, you can access the Web UI at http://localhost:8081/. The default login username and password for the multi executor server are both azkaban which is configured in `/app/azkaban/conf/azkaban-users.xml` in the azkaban-web-server container.
+Once all container are in the healthy state, you can access the Web UI at http://localhost:8081/. The default login username and password for the multi executor server are both azkaban which is configured in `/app/azkaban-web-server/conf/azkaban-users.xml` in the azkaban-web-server container.
 
 You can mount custom configuration files when you start the compose. Executor server is located at `/app/azkaban-exec-server` and web server is located at `/app/azkaban-web-server`.
 
