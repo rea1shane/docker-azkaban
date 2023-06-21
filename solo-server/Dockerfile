@@ -18,8 +18,9 @@ WORKDIR /app/azkaban
 
 COPY --from=builder /src/azkaban/azkaban-solo-server/build/install/azkaban-solo-server .
 
-# trap `docker stop` signal
-RUN echo -e 'trap "${script_dir}/shutdown-solo.sh > /dev/null; exit" SIGTERM\n' >> bin/start-solo.sh && \
+RUN echo -e 'echo Azkaban has been started.\n' >> bin/start-solo.sh && \
+    # trap `docker stop` signal
+    echo -e 'trap "echo Stopping...; ${script_dir}/shutdown-solo.sh > /dev/null; echo Azkaban is stopped.; exit" SIGTERM\n' >> bin/start-solo.sh && \
     # Blocking program.
     echo -e 'while true; do sleep 0.1; done' >> bin/start-solo.sh && \
     # In alpine, you must add `sh` before execable binary.
@@ -30,5 +31,4 @@ ENTRYPOINT [ "sh", "bin/start-solo.sh" ]
 
 EXPOSE 8081
 
-HEALTHCHECK --interval=10s --timeout=10s --start-period=10s --retries=3 \
-    CMD [ "netstat", "-anp", "|", "grep", "8081" ]
+HEALTHCHECK CMD [ "netstat", "-anp", "|", "grep", "8081" ]
