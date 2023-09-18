@@ -1,6 +1,6 @@
 # Docker Azkaban
 
-Azkaban docker image.
+Azkaban Docker image.
 
 After version 3.0, Azkaban provide two modes: the [stand alone “solo-server” mode](#solo-server) and [distributed multiple-executor mode](#multi-executor-server).
 
